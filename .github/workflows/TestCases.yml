@@ -20,5 +20,5 @@ jobs:
       - name: Compile & Execute
         run: |
           cd $GITHUB_WORKSPACE/
-          javac TestCases.java
-          java TestCases
+          javac PlanPatternControllerTest.java
+          java PlanPatternControllerTest
