@@ -2,14 +2,16 @@
     create table "User" (
     id serial primary key,
     name varchar(359) check (name
+	    
     ~'^[a-za-z0-9]+$'),
     surname varchar(350) check (surname
+	    
     ~'^[a-za-z0-9]+$'),
     email varchar(255) unique check (email
-   
+	    
         ~'^[a-za-z0-9._%+-]+@[a-za-z0-9.-]+\.[a-za-z]{2,}$'),
     password varchar(255) check (password
-   
+	    
         ~'^(?=.*[a-z])(?=.*[a-z])(?=.*\d)(?=.*[\$!?\])[a-za-z\d$!?]{8,}$')
 );
 
