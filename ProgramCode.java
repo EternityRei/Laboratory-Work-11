@@ -1,3 +1,5 @@
+package com.example.hygimeter.service;
+
 /**
  * Represents a plan pattern for managing microclimates.
  * It includes details such as associated microclimate, device information, and plan parameters.
@@ -194,11 +196,27 @@ public class PlanPatternServiceImpl implements PlanPatternService{
     }
 
     /**
-     * Validates the provided PlanPatternDTO based on the specified validation group.
+     * Validates the given PlanPatternDTO object according to the specified validation group.
+     * This method checks if the required fields in PlanPatternDTO and its nested objects (MicroclimateDTO, HumidityDTO, and PlanParametersDTO)
+     * are valid based on whether it's a create or update operation.
      *
-     * @param planPatternDTO The PlanPatternDTO to be validated.
-     * @param validationGroup The validation group class (e.g., OnCreate, OnUpdate).
-     * @throws InvalidDataException If validation fails.
+     * @param planPatternDTO The PlanPatternDTO object that contains the plan pattern data.
+     * @param validationGroup The class of the validation group, typically OnCreate.class or OnUpdate.class.
+     * @throws InvalidDataException If the validation fails, this exception is thrown with appropriate status codes and messages.
+     * 
+     * For a create operation (OnCreate.class):
+     * - Throws an exception if 'device' is not null.
+     * - Throws an exception if 'microclimate' is not null.
+     * - Throws an exception if 'planParameters' is null.
+     * - Throws an exception if 'relativeHumidity' or 'absoluteHumidity' in humidity is not null.
+     * 
+     * For an update operation (OnUpdate.class):
+     * - Throws an exception if the length of 'temperature' in microclimate exceeds 20 characters.
+     * - Throws an exception if the length of 'ventilation' in microclimate exceeds 100 characters.
+     * - Throws an exception if 'lightLevel' in microclimate is less than or equal to 0.
+     * - Throws an exception if 'relativeHumidity' or 'absoluteHumidity' in humidity is null or less than or equal to 0.
+     * - Throws an exception if 'temperatureSked' in planParameters is null, empty, or its length exceeds 100 characters.
+     * - Throws an exception if 'lightsOffTime' in planParameters is null or the hour is not within 0 to 23.
      */
     private void planPatternValidation(PlanPatternDTO planPatternDTO, Class<?> validationGroup) {
         MicroclimateDTO microclimate = planPatternDTO.getMicroclimateDTO();
@@ -211,45 +229,58 @@ public class PlanPatternServiceImpl implements PlanPatternService{
         if (isCreateOperation && validationGroup.equals(OnCreate.class)) {
             // Perform validations specific to OnCreate group
             if (planPatternDTO.getDevice() != null) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), "Device must be null at fulling the form");
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
+                                               "Device must be null at fulling the form");
             }
             if (microclimate != null) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), "Microclimate should be null while 1st time creating");
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                                               "Microclimate should be null while 1st time creating");
             }
             if (planParameters == null) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), "Plan parameters cannot be null");
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                                               "Plan parameters cannot be null");
             }
             if (humidity.getRelativeHumidity() != null) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), "Relative humidity must be null on creating plan parameters");
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                                               "Relative humidity must be null on creating plan parameters");
             }
             if (humidity.getAbsoluteHumidity() != null) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), "Absolute humidity must be null on creating plan parameters");
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                                               "Absolute humidity must be null on creating plan parameters");
             }
         } else if (!isCreateOperation && validationGroup.equals(OnUpdate.class)) {
             // Perform validations specific to OnUpdate group
             if (microclimate.getTemperature().length() > 20) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), "Max size of temperature is 20 characters");
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                                               "Max size of temperature is 20 characters");
             }
             if (microclimate.getVentilation().length() > 100) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), "Max size of ventilation is 100 characters");
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                                               "Max size of ventilation is 100 characters");
             }
             if (microclimate.getLightLevel() <= 0) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), "Light level must be greater than 0");
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                                               "Light level must be greater than 0");
             }
             if (humidity.getRelativeHumidity() == null || humidity.getRelativeHumidity() <= 0) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), "Relative humidity must be not null and greater than 0 on updating parameters");
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                                               "Relative humidity must be not null and greater than 0 on updating parameters");
             }
             if (humidity.getAbsoluteHumidity() == null || humidity.getAbsoluteHumidity() <= 0) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), "Absolute humidity must be not null and greater than 0 on updating parameters");
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                                               "Absolute humidity must be not null and greater than 0 on updating parameters");
             }
             if (planParameters.getTemperatureSked() == null || planParameters.getTemperatureSked().isEmpty()) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), "Temperature schedule must be not null and not empty on updating parameters");
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                                               "Temperature schedule must be not null and not empty on updating parameters");
             }
             if (planParameters.getTemperatureSked().length() > 100) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), "Max size of temperature schedule is 100 characters");
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                                               "Max size of temperature schedule is 100 characters");
             }
             if (planParameters.getLightsOffTime() == null || planParameters.getLightsOffTime().getHour() > 23 || planParameters.getLightsOffTime().getHour() < 0 ) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), "Time when lights go off must be not null on updating parameters");
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                                               "Time when lights go off must be not null on updating parameters");
             }
         }
     }
