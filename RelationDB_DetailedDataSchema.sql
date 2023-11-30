@@ -7,7 +7,7 @@ CREATE TABLE "User" (
         email ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     ),
     password VARCHAR(255) CHECK (
-        password ~ '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\$!?\])[a-zA-Z\d$!?]{8,}$'
+        password ~ '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\$!?\])$'
     )
 );
 
