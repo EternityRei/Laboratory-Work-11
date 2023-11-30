@@ -93,8 +93,8 @@ public class PlanPatternDTO {
      * Plan parameters for the PlanPattern. It cannot be null when creating a
        new PlanPattern.
      */
-    @NotNull(groups = OnCreate.class, message = "Plan parameters cannot be
- null")
+    @NotNull(groups = OnCreate.class, message = "Plan parameters cannot be"
+    + "null")
     @Valid
     @Schema(description = "Plan Parameters")
     private PlanParametersDTO planParametersDTO;
