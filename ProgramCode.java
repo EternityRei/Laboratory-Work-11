@@ -1,3 +1,11 @@
+/**
+ * This package contains classes and interfaces related to the service layer
+ * of the hygimeter application. It includes entities representing plan patterns
+ * for managing microclimates, data transfer objects (DTOs), repositories for
+ * database access, and service implementations for business logic.
+ *
+ * @since 1.0
+ */
 package com.example.hygimeter.service;
 
 /**
