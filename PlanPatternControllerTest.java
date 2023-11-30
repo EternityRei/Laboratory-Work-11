@@ -81,7 +81,7 @@ public class PlanPatternControllerTest {
         String planPatternDTOJson = objectMapper.writeValueAsString(planPatternDTO);
 
         String expectedCode = "OK";
-        String expectedMessage = "Plan pattern has been updated successfully";
+        String expectedMessage = "Plan pattern has been updated";
 
 
         mockMvc.perform(MockMvcRequestBuilders.put("/plan-pattern/{id}", id)
