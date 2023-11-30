@@ -1,11 +1,3 @@
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,16 +26,6 @@ public class PlanPattern {
 }
 
 
-import com.example.hygimeter.dto.group.OnCreate;
-import com.example.hygimeter.dto.group.OnUpdate;
-import com.example.hygimeter.model.Microclimate;
-import com.example.hygimeter.model.PlanParameters;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
-import lombok.Data;
-
 @Data
 @Schema(description = "Plan Pattern Data Transfer Object")
 public class PlanPatternDTO {
@@ -66,22 +48,11 @@ public class PlanPatternDTO {
     private PlanParametersDTO planParametersDTO;
 }
 
-import com.example.hygimeter.model.PlanPattern;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
-
 @Repository
 public interface PlanPatternRepository extends JpaRepository<PlanPattern, Integer> {
     Optional<PlanPattern> findPlanPatternById(Integer id);
 }
 
-
-import com.example.hygimeter.dto.PlanPatternDTO;
-import org.springframework.data.relational.core.sql.In;
-
-import java.util.List;
 
 public interface PlanPatternService {
     PlanPatternDTO createPlanPattern(PlanPatternDTO planPatternDTO);
@@ -90,28 +61,6 @@ public interface PlanPatternService {
     PlanPatternDTO getPlanPatternById(Integer id);
     List<PlanPatternDTO> getAllPlanPatterns();
 }
-
-
-import com.example.hygimeter.dto.HumidityDTO;
-import com.example.hygimeter.dto.MicroclimateDTO;
-import com.example.hygimeter.dto.PlanParametersDTO;
-import com.example.hygimeter.dto.PlanPatternDTO;
-import com.example.hygimeter.dto.group.OnCreate;
-import com.example.hygimeter.dto.group.OnUpdate;
-import com.example.hygimeter.exception.EntityNotFoundException;
-import com.example.hygimeter.exception.StatusCodes;
-import com.example.hygimeter.exception.InvalidDataException;
-import com.example.hygimeter.mapper.PlanPatternMapper;
-import com.example.hygimeter.model.Humidity;
-import com.example.hygimeter.model.Microclimate;
-import com.example.hygimeter.model.PlanParameters;
-import com.example.hygimeter.model.PlanPattern;
-import com.example.hygimeter.repository.PlanPatternRepository;
-import io.micrometer.common.util.StringUtils;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
