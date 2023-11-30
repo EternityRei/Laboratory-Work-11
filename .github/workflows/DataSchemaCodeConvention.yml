@@ -1,7 +1,7 @@
 name: DataSchemaCodeConvention
 on:
   push:
-    branches: master 
+    branches: LW11 
 jobs:
   sql_linter:
     runs-on: ubuntu-latest
