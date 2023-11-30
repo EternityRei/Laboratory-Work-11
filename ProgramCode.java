@@ -1,5 +1,3 @@
-package com.example.hygimeter.model;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,8 +34,6 @@ public class PlanPattern {
 }
 
 
-package com.example.hygimeter.dto;
-
 import com.example.hygimeter.dto.group.OnCreate;
 import com.example.hygimeter.dto.group.OnUpdate;
 import com.example.hygimeter.model.Microclimate;
@@ -70,9 +66,6 @@ public class PlanPatternDTO {
     private PlanParametersDTO planParametersDTO;
 }
 
-
-package com.example.hygimeter.repository;
-
 import com.example.hygimeter.model.PlanPattern;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -84,8 +77,6 @@ public interface PlanPatternRepository extends JpaRepository<PlanPattern, Intege
     Optional<PlanPattern> findPlanPatternById(Integer id);
 }
 
-
-package com.example.hygimeter.service;
 
 import com.example.hygimeter.dto.PlanPatternDTO;
 import org.springframework.data.relational.core.sql.In;
@@ -100,8 +91,6 @@ public interface PlanPatternService {
     List<PlanPatternDTO> getAllPlanPatterns();
 }
 
-
-package com.example.hygimeter.service;
 
 import com.example.hygimeter.dto.HumidityDTO;
 import com.example.hygimeter.dto.MicroclimateDTO;
