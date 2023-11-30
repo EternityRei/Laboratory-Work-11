@@ -190,11 +190,11 @@ public class PlanPatternServiceImpl implements PlanPatternService {
     /**
      * Mapper for converting between PlanPattern entities
        and their DTO representations.
-     * Facilitates the transformation of data for transfer 
+     * Facilitates the transformation of data for transfer
        between different layers of the application.
      */
     private final PlanPatternMapper planPatternMapper;
-    
+
     /**
      * Creates a new PlanPattern entity from a DTO and saves it to the
        repository.
@@ -206,7 +206,7 @@ public class PlanPatternServiceImpl implements PlanPatternService {
      */
     @Override
     public PlanPatternDTO createPlanPattern(PlanPatternDTO planPatternDTO) {
-        PlanPattern planPattern =
+        final PlanPattern planPattern =
  planPatternMapper.toPlanPattern(planPatternDTO);
         return
  planPatternMapper.toPlanPatternDTO(planPatternRepository.save(planPattern));
@@ -222,11 +222,12 @@ public class PlanPatternServiceImpl implements PlanPatternService {
        provided ID.
      */
     @Override
-    public PlanPatternDTO updatePlanPattern(Integer id, PlanPatternDTO
+    public PlanPatternDTO updatePlanPattern(final Integer id, final PlanPatternDTO
  planPatternDTO) {
         PlanPattern planPattern = planPatternRepository.findById(id)
                 .orElseThrow(() -> new
- EntityNotFoundException(StatusCodes.ENTITY_NOT_FOUND.name(), "Plan pattern not found"));
+ EntityNotFoundException(StatusCodes.ENTITY_NOT_FOUND.name(),
+                         "Plan pattern not found"));
 
         planPatternValidation(planPatternDTO, OnUpdate.class);
         PlanPattern newPlanPattern =
@@ -247,10 +248,12 @@ public class PlanPatternServiceImpl implements PlanPatternService {
        provided ID.
      */
     @Override
-    public void deletePlanPattern(Integer id) {
+    public void deletePlanPattern(final Integer id) {
         PlanPattern planPattern = planPatternRepository.findById(id)
-                .orElseThrow(() -> new
- EntityNotFoundException(StatusCodes.ENTITY_NOT_FOUND.name(), "Plan Pattern not found"));
+                .orElseThrow(() -> new EntityNotFoundException(
+                    StatusCodes.ENTITY_NOT_FOUND.name(), 
+                    "Plan Pattern not found")
+                            );
 
         planPatternRepository.deleteById(planPattern.getId());
     }
@@ -264,10 +267,12 @@ public class PlanPatternServiceImpl implements PlanPatternService {
        provided ID.
      */
     @Override
-    public PlanPatternDTO getPlanPatternById(Integer id) {
+    public PlanPatternDTO getPlanPatternById(final Integer id) {
         PlanPattern planPattern = planPatternRepository.findById(id)
-                .orElseThrow(() -> new
- EntityNotFoundException(StatusCodes.ENTITY_NOT_FOUND.name(), "Plan Pattern not found"));
+                .orElseThrow(() -> new EntityNotFoundException(
+                    StatusCodes.ENTITY_NOT_FOUND.name(),
+                    "Plan Pattern not found")
+                            );
 
         return planPatternMapper.toPlanPatternDTO(planPattern);
     }
@@ -318,12 +323,11 @@ public class PlanPatternServiceImpl implements PlanPatternService {
      * - Throws an exception if 'lightsOffTime' in planParameters is null or
        the hour is not within 0 to 23.
      */
-    private void planPatternValidation(PlanPatternDTO planPatternDTO, Class<?>
+    private void planPatternValidation(final PlanPatternDTO planPatternDTO, final Class<?>
  validationGroup) {
         MicroclimateDTO microclimate = planPatternDTO.getMicroclimateDTO();
         HumidityDTO humidity = microclimate.getHumidity();
-        PlanParametersDTO planParameters =
- planPatternDTO.getPlanParametersDTO();
+        PlanParametersDTO planParameters = planPatternDTO.getPlanParametersDTO();
 
         // Assuming that an ID of null means this is a create operation
         boolean isCreateOperation = (planPatternDTO.getId() == null);
@@ -355,8 +359,8 @@ public class PlanPatternServiceImpl implements PlanPatternService {
                                                "Absolute humidity must be null"
                                                + "on creating plan parameters");
             }
-        } else if (!isCreateOperation &&
- validationGroup.equals(OnUpdate.class)) {
+        } else if (!isCreateOperation
+                   && validationGroup.equals(OnUpdate.class)) {
             // Perform validations specific to OnUpdate group
             if (microclimate.getTemperature().length() > 20) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
@@ -373,22 +377,22 @@ public class PlanPatternServiceImpl implements PlanPatternService {
                                                "Light level must be greater"
                                                + "than 0");
             }
-            if (humidity.getRelativeHumidity() == null ||
- humidity.getRelativeHumidity() <= 0) {
+            if (humidity.getRelativeHumidity() == null
+                || humidity.getRelativeHumidity() <= 0) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
                                                "Relative humidity must be not"
                                                + "null and greater than 0 on"
                                                + "updating parameters");
             }
-            if (humidity.getAbsoluteHumidity() == null ||
- humidity.getAbsoluteHumidity() <= 0) {
+            if (humidity.getAbsoluteHumidity() == null
+                || humidity.getAbsoluteHumidity() <= 0) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
                                                "Absolute humidity must be not"
                                                + "null and greater than 0 on"
                                                + "updating parameters");
             }
-            if (planParameters.getTemperatureSked() == null ||
- planParameters.getTemperatureSked().isEmpty()) {
+            if (planParameters.getTemperatureSked() == null
+                || planParameters.getTemperatureSked().isEmpty()) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
                                                "Temperature schedule must be not"
                                                + "null and not empty on"
@@ -399,8 +403,9 @@ public class PlanPatternServiceImpl implements PlanPatternService {
                                                "Max size of temperature schedule"
                                                + "is 100 characters");
             }
-            if (planParameters.getLightsOffTime() == null ||
- planParameters.getLightsOffTime().getHour() > 23 ||planParameters.getLightsOffTime().getHour() < 0 ) {
+            if (planParameters.getLightsOffTime() == null
+                || planParameters.getLightsOffTime().getHour() > 23
+                || planParameters.getLightsOffTime().getHour() < 0) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
                                                "Time when lights go off must be not"
                                                + "null on updating parameters");
