@@ -205,7 +205,7 @@ public class PlanPatternServiceImpl implements PlanPatternService {
        and persisted data.
      */
     @Override
-    public PlanPatternDTO createPlanPattern(PlanPatternDTO planPatternDTO) {
+    public PlanPatternDTO createPlanPattern(final PlanPatternDTO planPatternDTO) {
         final PlanPattern planPattern =
  planPatternMapper.toPlanPattern(planPatternDTO);
         return
@@ -251,7 +251,7 @@ public class PlanPatternServiceImpl implements PlanPatternService {
     public void deletePlanPattern(final Integer id) {
         PlanPattern planPattern = planPatternRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
-                    StatusCodes.ENTITY_NOT_FOUND.name(), 
+                    StatusCodes.ENTITY_NOT_FOUND.name(),
                     "Plan Pattern not found")
                             );
 
@@ -301,7 +301,7 @@ public class PlanPatternServiceImpl implements PlanPatternService {
        OnCreate.class or OnUpdate.class.
      * @throws InvalidDataException If the validation fails, this exception is
        thrown with appropriate status codes and messages.
-     * 
+     *
      * For a create operation (OnCreate.class):
      * - Throws an exception if 'device' is not null.
      * - Throws an exception if 'microclimate' is not null.
@@ -323,12 +323,12 @@ public class PlanPatternServiceImpl implements PlanPatternService {
      * - Throws an exception if 'lightsOffTime' in planParameters is null or
        the hour is not within 0 to 23.
      */
-    private void planPatternValidation(final PlanPatternDTO planPatternDTO, final Class<?>
- validationGroup) {
+    private void planPatternValidation(final PlanPatternDTO planPatternDTO,
+                                       final Class<?> validationGroup) {
         MicroclimateDTO microclimate = planPatternDTO.getMicroclimateDTO();
         HumidityDTO humidity = microclimate.getHumidity();
         PlanParametersDTO planParameters = planPatternDTO.getPlanParametersDTO();
-
+        
         // Assuming that an ID of null means this is a create operation
         boolean isCreateOperation = (planPatternDTO.getId() == null);
 
@@ -340,22 +340,22 @@ public class PlanPatternServiceImpl implements PlanPatternService {
                                                + "the form");
             }
             if (microclimate != null) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Microclimate should be null"
                                                + "while 1st time creating");
             }
             if (planParameters == null) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Plan parameters cannot be"
                                                + "null");
             }
             if (humidity.getRelativeHumidity() != null) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Relative humidity must be null"
                                                + "on creating plan parameters");
             }
             if (humidity.getAbsoluteHumidity() != null) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Absolute humidity must be null"
                                                + "on creating plan parameters");
             }
@@ -363,50 +363,50 @@ public class PlanPatternServiceImpl implements PlanPatternService {
                    && validationGroup.equals(OnUpdate.class)) {
             // Perform validations specific to OnUpdate group
             if (microclimate.getTemperature().length() > 20) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Max size of temperature is 20"
                                                + "characters");
             }
             if (microclimate.getVentilation().length() > 100) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Max size of ventilation is 100"
                                                + "characters");
             }
             if (microclimate.getLightLevel() <= 0) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Light level must be greater"
                                                + "than 0");
             }
             if (humidity.getRelativeHumidity() == null
                 || humidity.getRelativeHumidity() <= 0) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Relative humidity must be not"
                                                + "null and greater than 0 on"
                                                + "updating parameters");
             }
             if (humidity.getAbsoluteHumidity() == null
                 || humidity.getAbsoluteHumidity() <= 0) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Absolute humidity must be not"
                                                + "null and greater than 0 on"
                                                + "updating parameters");
             }
             if (planParameters.getTemperatureSked() == null
                 || planParameters.getTemperatureSked().isEmpty()) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Temperature schedule must be not"
                                                + "null and not empty on"
                                                + "updating parameters");
             }
             if (planParameters.getTemperatureSked().length() > 100) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Max size of temperature schedule"
                                                + "is 100 characters");
             }
             if (planParameters.getLightsOffTime() == null
                 || planParameters.getLightsOffTime().getHour() > 23
                 || planParameters.getLightsOffTime().getHour() < 0) {
-                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
+                throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Time when lights go off must be not"
                                                + "null on updating parameters");
             }
