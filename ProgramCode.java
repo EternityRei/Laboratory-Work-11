@@ -83,8 +83,8 @@ public class PlanPatternDTO {
      * Microclimate details for the PlanPattern. It should be null when
      * creating a new PlanPattern for the first time.
      */
-    @Null(groups = OnCreate.class, message = "Microclimate should be null while
- 1st time creating")
+    @Null(groups = OnCreate.class, message = "Microclimate should be null while"
+    + "1st time creating")
     @Valid
     @Schema(description = "Microclimate")
     private MicroclimateDTO microclimateDTO;
