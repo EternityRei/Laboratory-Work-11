@@ -118,13 +118,50 @@ public interface PlanPatternRepository extends JpaRepository<PlanPattern,
 }
 
 /**
- * Service interface defining operations for managing PlanPatterns.
+ * Public interface for the PlanPattern service.
  */
 public interface PlanPatternService {
+
+    /**
+     * Creates a new PlanPattern.
+     *
+     * @param planPatternDTO The PlanPattern data transfer object containing the necessary information.
+     * @return The created PlanPatternDTO with generated data, such as its ID.
+     */
     PlanPatternDTO createPlanPattern(PlanPatternDTO planPatternDTO);
+
+    /**
+     * Updates an existing PlanPattern.
+     *
+     * @param id The ID of the PlanPattern to update.
+     * @param planPatternDTO The PlanPattern data transfer object containing the updated information.
+     * @return The updated PlanPatternDTO.
+     * @throws EntityNotFoundException If no PlanPattern is found with the provided ID.
+     */
     PlanPatternDTO updatePlanPattern(Integer id, PlanPatternDTO planPatternDTO);
+
+    /**
+     * Deletes a PlanPattern.
+     *
+     * @param id The ID of the PlanPattern to delete.
+     * @throws EntityNotFoundException If no PlanPattern is found with the provided ID.
+     */
     void deletePlanPattern(Integer id);
+
+    /**
+     * Retrieves a PlanPattern by its ID.
+     *
+     * @param id The ID of the PlanPattern to retrieve.
+     * @return The requested PlanPatternDTO.
+     * @throws EntityNotFoundException If no PlanPattern is found with the provided ID.
+     */
     PlanPatternDTO getPlanPatternById(Integer id);
+
+    /**
+     * Retrieves all PlanPatterns.
+     *
+     * @return A list of all PlanPatternDTOs.
+     */
     List<PlanPatternDTO> getAllPlanPatterns();
 }
 
@@ -135,9 +172,18 @@ public interface PlanPatternService {
  */
 @Service
 @RequiredArgsConstructor
-public class PlanPatternServiceImpl implements PlanPatternService{
+public class PlanPatternServiceImpl implements PlanPatternService {
 
+    /**
+     * Repository for handling PlanPattern entities.
+     * Used for data access operations like create, read, update, and delete on PlanPatterns.
+     */
     private final PlanPatternRepository planPatternRepository;
+
+    /**
+     * Mapper for converting between PlanPattern entities and their DTO representations.
+     * Facilitates the transformation of data for transfer between different layers of the application.
+     */
     private final PlanPatternMapper planPatternMapper;
     
     /**
