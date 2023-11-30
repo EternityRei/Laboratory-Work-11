@@ -1,20 +1,24 @@
--- Create User table
-CREATE TABLE "User" (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(359) CHECK (name ~ '^[A-Za-z0-9]+$'),
-    surname VARCHAR(350) CHECK (surname ~ '^[A-Za-z0-9]+$'),
-    email VARCHAR(255) UNIQUE CHECK (email ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'),
-    password VARCHAR(255) CHECK (password ~ '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\$!?\])[A-Za-z\d$!?]{8,}$')
+-- create user table
+create table "User" (
+    id serial primary key,
+    name varchar(359) check (name ~ '^[a-za-z0-9]+$'),
+    surname varchar(350) check (surname ~ '^[a-za-z0-9]+$'),
+    email varchar(255) unique check (email ~
+    '^[a-za-z0-9._%+-]+@[a-za-z0-9.-]+\.[a-za-z]{2,}$'),
+    password varchar(255) check (password ~
+    '^(?=.*[a-z])(?=.*[a-z])(?=.*\d)(?=.*[\$!?\\])[a-za-z\d$!?]{8,}$')
 );
 
--- Create Microclimate table
-CREATE TABLE Microclimate (
-    id SERIAL PRIMARY KEY,
-    temperature VARCHAR(20),
-    ventilation VARCHAR(150),
-    lightLevel NUMERIC CHECK (lightLevel > 0),
-    humidity_id INT
+-- create microclimate table
+create table microclimate (
+    id serial primary key,
+    temperature varchar(20),
+    ventilation varchar(150),
+    lightlevel numeric check (lightlevel > 0),
+    humidity_id int
 );
+...
+
 
 -- Create Humidity table
 CREATE TABLE Humidity (
