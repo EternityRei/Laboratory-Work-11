@@ -362,17 +362,20 @@ public class PlanPatternServiceImpl implements PlanPatternService {
         } else if (!isCreateOperation
                    && validationGroup.equals(OnUpdate.class)) {
             // Perform validations specific to OnUpdate group
-            if (microclimate.getTemperature().length() > 20) {
+            int maxTempLength = 20;
+            if (microclimate.getTemperature().length() > maxTempLength) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Max size of temperature is 20"
                                                + "characters");
             }
-            if (microclimate.getVentilation().length() > 100) {
+            int maxVentLength = 100;
+            if (microclimate.getVentilation().length() > maxVentLength) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Max size of ventilation is 100"
                                                + "characters");
             }
-            if (microclimate.getLightLevel() <= 0) {
+            int negativeLightLevel = 0;
+            if (microclimate.getLightLevel() <= negativeLightLevel) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
                                                "Light level must be greater"
                                                + "than 0");
@@ -398,16 +401,21 @@ public class PlanPatternServiceImpl implements PlanPatternService {
                                                + "null and not empty on"
                                                + "updating parameters");
             }
-            if (planParameters.getTemperatureSked().length() > 100) {
+            int maxLength = 100;
+            if (planParameters.getTemperatureSked().length() > maxLength) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
-                                               "Max size of temperature schedule"
+                                               "Max size of temperature"
+                                               + "schedule"
                                                + "is 100 characters");
             }
+            int expendedHour = 23;
+            int notExistingHour = 0;
             if (planParameters.getLightsOffTime() == null
-                || planParameters.getLightsOffTime().getHour() > 23
-                || planParameters.getLightsOffTime().getHour() < 0) {
+                || planParameters.getLightsOffTime().getHour() > expendedHour
+                || planParameters.getLightsOffTime().getHour() < notExistingHour) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
-                                               "Time when lights go off must be not"
+                                               "Time when lights go off"
+                                               + "must be not"
                                                + "null on updating parameters");
             }
         }
