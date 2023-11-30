@@ -62,9 +62,9 @@ CREATE TABLE themetopicsinfo (
     topics_info_id INT,
     PRIMARY KEY (theme_id, topics_info_id),
     CONSTRAINT fk_theme FOREIGN KEY (theme_id) 
-        REFERENCES theme(id),
+    REFERENCES theme(id),
     CONSTRAINT fk_topics_info FOREIGN KEY (topics_info_id) 
-        REFERENCES topicsinfo(id)
+    REFERENCES topicsinfo(id)
 );
 
 -- Create microclimateplan table
