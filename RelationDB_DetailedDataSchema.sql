@@ -1,110 +1,117 @@
 -- create user table
-create table "User" (
+    create table "User" (
     id serial primary key,
-    name varchar(359) check (name ~ '^[a-za-z0-9]+$'),
-    surname varchar(350) check (surname ~ '^[a-za-z0-9]+$'),
-    email varchar(255) unique check (email ~
-    '^[a-za-z0-9._%+-]+@[a-za-z0-9.-]+\.[a-za-z]{2,}$'),
-    password varchar(255) check (password ~
-    '^(?=.*[a-z])(?=.*[a-z])(?=.*\d)(?=.*[\$!?\\])[a-za-z\d$!?]{8,}$')
+    name varchar(359) check (name
+    ~'^[a-za-z0-9]+$'),
+    surname varchar(350) check (surname
+    ~'^[a-za-z0-9]+$'),
+    email varchar(255) unique check (email
+   
+        ~'^[a-za-z0-9._%+-]+@[a-za-z0-9.-]+\.[a-za-z]{2,}$'),
+    password varchar(255) check (password
+   
+        ~'^(?=.*[a-z])(?=.*[a-z])(?=.*\d)(?=.*[\$!?\])[a-za-z\d$!?]{8,}$')
 );
 
 -- create microclimate table
-create table microclimate (
+    create table microclimate (
     id serial primary key,
     temperature varchar(20),
     ventilation varchar(150),
     lightlevel numeric check (lightlevel > 0),
     humidity_id int
 );
-...
 
-
--- Create Humidity table
-CREATE TABLE Humidity (
-    id SERIAL PRIMARY KEY,
-    relativeHumidity NUMERIC CHECK (relativeHumidity > 0),
-    absoluteHumidity NUMERIC CHECK (absoluteHumidity > 0)
+-- create humidity table
+    create table humidity (
+    id serial primary key,
+    relativehumidity numeric check (relativehumidity > 0),
+    absolutehumidity numeric check (absolutehumidity > 0)
 );
 
--- Create PlanParameters table
-CREATE TABLE PlanParameters (
-    id SERIAL PRIMARY KEY,
-    temperatureSked VARCHAR(100),
-    lightsOffTime TIMESTAMP
+-- create planparameters table
+    create table planparameters (
+    id serial primary key,
+    temperaturesked varchar(100),
+    lightsofftime timestamp
 );
 
--- Create PlanPattern table
-CREATE TABLE PlanPattern (
-    id SERIAL PRIMARY KEY,
-    optimalMicroclimate_id INT,
-    device VARCHAR(200),
-    planParameters_id INT
+-- create planpattern table
+    create table planpattern (
+    id serial primary key,
+    optimalmicroclimate_id int,
+    device varchar(200),
+    planparameters_id int
 );
 
--- Create Theme table
-CREATE TABLE Theme (
-    id INT PRIMARY KEY,
-    title VARCHAR(255)
+-- create theme table
+    create table theme (
+    id int primary key,
+    title varchar(255)
 );
 
--- Create TopicsInfo table
-CREATE TABLE TopicsInfo (
-    id INT PRIMARY KEY,
-    description TEXT,
-    type VARCHAR(255),
-    info BYTEA
+-- create topicsinfo table
+    create table topicsinfo (
+    id int primary key,
+    description text,
+    type varchar(255),
+    info bytea
 );
 
--- Create a junction table for the many-to-many relationship
-CREATE TABLE ThemeTopicsInfo (
-    theme_id INT,
-    topics_info_id INT,
-    PRIMARY KEY (theme_id, topics_info_id),
-    CONSTRAINT fk_theme
-        FOREIGN KEY (theme_id) 
-        REFERENCES Theme(id),
-    CONSTRAINT fk_topics_info
-        FOREIGN KEY (topics_info_id) 
-        REFERENCES TopicsInfo(id)
+-- create a junction table for the many-to-many relationship
+    create table themetopicsinfo (
+    theme_id int,
+    topics_info_id int,
+    primary key (theme_id, topics_info_id),
+    constraint fk_theme
+        foreign key (theme_id) 
+        references theme(id),
+    constraint fk_topics_info
+        foreign key (topics_info_id) 
+        references topicsinfo(id)
 );
 
--- Create MicroclimatePlan table
-CREATE TABLE MicroclimatePlan (
-    id SERIAL PRIMARY KEY,
-    planPattern_id INT,
-    initiallyMicroclimate_id INT,
-    user_id INT,
-	topic_id INT
+-- create microclimateplan table
+    create table microclimateplan (
+    id serial primary key,
+    planpattern_id int,
+    initiallymicroclimate_id int,
+    user_id int,
+	topic_id int
 );
 
 
--- Add foreign key constraints
-ALTER TABLE Microclimate
-ADD CONSTRAINT fk_humidity_id
-FOREIGN KEY (humidity_id) REFERENCES Humidity(id) ON DELETE CASCADE ON UPDATE CASCADE;
+-- add foreign key constraints
+    alter table microclimate
+    add constraint fk_humidity_id
+foreign key (humidity_id) references humidity(id) on delete cascade on update
+        cascade;
 
-ALTER TABLE PlanPattern
-ADD CONSTRAINT fk_optimalMicroclimate_id
-FOREIGN KEY (optimalMicroclimate_id) REFERENCES Microclimate(id) ON DELETE CASCADE ON UPDATE CASCADE;
+    alter table planpattern
+    add constraint fk_optimalmicroclimate_id
+foreign key (optimalmicroclimate_id) references microclimate(id) on delete
+        cascade on update cascade;
 
-ALTER TABLE PlanPattern
-ADD CONSTRAINT fk_planParameters_id
-FOREIGN KEY (planParameters_id) REFERENCES PlanParameters(id) ON DELETE CASCADE ON UPDATE CASCADE;
+    alter table planpattern
+    add constraint fk_planparameters_id
+foreign key (planparameters_id) references planparameters(id) on delete cascade
+        on update cascade;
 
-ALTER TABLE MicroclimatePlan
-ADD CONSTRAINT fk_planPattern_id
-FOREIGN KEY (planPattern_id) REFERENCES PlanPattern(id) ON DELETE CASCADE ON UPDATE CASCADE;
+    alter table microclimateplan
+    add constraint fk_planpattern_id
+foreign key (planpattern_id) references planpattern(id) on delete cascade on
+        update cascade;
 
-ALTER TABLE MicroclimatePlan
-ADD CONSTRAINT fk_initiallyMicroclimate_id
-FOREIGN KEY (initiallyMicroclimate_id) REFERENCES Microclimate(id) ON DELETE CASCADE ON UPDATE CASCADE;
+    alter table microclimateplan
+    add constraint fk_initiallymicroclimate_id
+foreign key (initiallymicroclimate_id) references microclimate(id) on delete
+        cascade on update cascade;
 
-ALTER TABLE MicroclimatePlan
-ADD CONSTRAINT fk_user_id
-FOREIGN KEY (user_id) REFERENCES "User"(id) ON DELETE CASCADE ON UPDATE CASCADE;
+    alter table microclimateplan
+    add constraint fk_user_id
+foreign key (user_id) references "User"(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE MicroclimatePlan
-ADD CONSTRAINT fk_topic_id
-FOREIGN KEY (topic_id) 
-REFERENCES TopicsInfo(id) ON DELETE CASCADE ON UPDATE CASCADE;
+    alter table microclimateplan
+    add constraint fk_topic_id
+foreign key (topic_id) 
+references topicsinfo(id) on delete cascade on update cascade;
