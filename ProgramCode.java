@@ -275,75 +275,78 @@ public class PlanPatternServiceImpl implements PlanPatternService{
             // Perform validations specific to OnCreate group
             if (planPatternDTO.getDevice() != null) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(),
-                                               "Device must be null at fulling
- the form");
+                                               "Device must be null at fulling"
+                                               + "the form");
             }
             if (microclimate != null) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
-                                               "Microclimate should be null
- while 1st time creating");
+                                               "Microclimate should be null"
+                                               + "while 1st time creating");
             }
             if (planParameters == null) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
-                                               "Plan parameters cannot be
- null");
+                                               "Plan parameters cannot be"
+                                               + "null");
             }
             if (humidity.getRelativeHumidity() != null) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
-                                               "Relative humidity must be null
- on creating plan parameters");
+                                               "Relative humidity must be null"
+                                               + "on creating plan parameters");
             }
             if (humidity.getAbsoluteHumidity() != null) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
-                                               "Absolute humidity must be null
- on creating plan parameters");
+                                               "Absolute humidity must be null"
+                                               + "on creating plan parameters");
             }
         } else if (!isCreateOperation &&
  validationGroup.equals(OnUpdate.class)) {
             // Perform validations specific to OnUpdate group
             if (microclimate.getTemperature().length() > 20) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
-                                               "Max size of temperature is 20
- characters");
+                                               "Max size of temperature is 20"
+                                               + "characters");
             }
             if (microclimate.getVentilation().length() > 100) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
-                                               "Max size of ventilation is 100
- characters");
+                                               "Max size of ventilation is 100"
+                                               + "characters");
             }
             if (microclimate.getLightLevel() <= 0) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
-                                               "Light level must be greater
- than 0");
+                                               "Light level must be greater"
+                                               + "than 0");
             }
             if (humidity.getRelativeHumidity() == null ||
  humidity.getRelativeHumidity() <= 0) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
-                                               "Relative humidity must be not
- null and greater than 0 on updating parameters");
+                                               "Relative humidity must be not"
+                                               + "null and greater than 0 on"
+                                               + "updating parameters");
             }
             if (humidity.getAbsoluteHumidity() == null ||
  humidity.getAbsoluteHumidity() <= 0) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
-                                               "Absolute humidity must be not
- null and greater than 0 on updating parameters");
+                                               "Absolute humidity must be not"
+                                               + "null and greater than 0 on"
+                                               + "updating parameters");
             }
             if (planParameters.getTemperatureSked() == null ||
  planParameters.getTemperatureSked().isEmpty()) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
-                                               "Temperature schedule must be
- not null and not empty on updating parameters");
+                                               "Temperature schedule must be not"
+                                               + "null and not empty on"
+                                               + "updating parameters");
             }
             if (planParameters.getTemperatureSked().length() > 100) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
-                                               "Max size of temperature
- schedule is 100 characters");
+                                               "Max size of temperature schedule"
+                                               + "is 100 characters");
             }
             if (planParameters.getLightsOffTime() == null ||
- planParameters.getLightsOffTime().getHour() > 23 || planParameters.getLightsOffTime().getHour() < 0 ) {
+ planParameters.getLightsOffTime().getHour() > 23 ||planParameters.getLightsOffTime().getHour() < 0 ) {
                 throw new InvalidDataException(StatusCodes.INVALID_DATA.name(), 
-                                               "Time when lights go off must be
- not null on updating parameters");
+                                               "Time when lights go off must be not"
+                                               + "null on updating parameters");
             }
         }
     }
