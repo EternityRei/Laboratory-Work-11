@@ -61,8 +61,10 @@ CREATE TABLE themetopicsinfo (
     theme_id INT,
     topics_info_id INT,
     PRIMARY KEY (theme_id, topics_info_id),
-    CONSTRAINT fk_theme FOREIGN KEY (theme_id) REFERENCES theme(id),
-    CONSTRAINT fk_topics_info FOREIGN KEY (topics_info_id) REFERENCES topicsinfo(id)
+    CONSTRAINT fk_theme FOREIGN KEY (theme_id) 
+        REFERENCES theme(id),
+    CONSTRAINT fk_topics_info FOREIGN KEY (topics_info_id) 
+        REFERENCES topicsinfo(id)
 );
 
 -- Create microclimateplan table
@@ -76,38 +78,38 @@ CREATE TABLE microclimateplan (
 
 -- Add foreign key constraints to microclimate
 ALTER TABLE microclimate
-    ADD CONSTRAINT fk_humidity_id 
-    FOREIGN KEY (humidity_id) REFERENCES humidity(id)
-    ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT fk_humidity_id 
+FOREIGN KEY (humidity_id) REFERENCES humidity (id)
+ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- Add foreign key constraints to planpattern
 ALTER TABLE planpattern
-    ADD CONSTRAINT fk_optimalmicroclimate_id 
-    FOREIGN KEY (optimalmicroclimate_id) REFERENCES microclimate(id)
-    ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT fk_optimalmicroclimate_id 
+FOREIGN KEY (optimalmicroclimate_id) REFERENCES microclimate(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE planpattern
-    ADD CONSTRAINT fk_planparameters_id 
-    FOREIGN KEY (planparameters_id) REFERENCES planparameters(id)
-    ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT fk_planparameters_id 
+FOREIGN KEY (planparameters_id) REFERENCES planparameters(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- Add foreign key constraints to microclimateplan
 ALTER TABLE microclimateplan
-    ADD CONSTRAINT fk_planpattern_id 
-    FOREIGN KEY (planpattern_id) REFERENCES planpattern(id)
-    ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT fk_planpattern_id 
+FOREIGN KEY (planpattern_id) REFERENCES planpattern(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE microclimateplan
-    ADD CONSTRAINT fk_initiallymicroclimate_id 
-    FOREIGN KEY (initiallymicroclimate_id) REFERENCES microclimate(id)
-    ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT fk_initiallymicroclimate_id 
+FOREIGN KEY (initiallymicroclimate_id) REFERENCES microclimate(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE microclimateplan
-    ADD CONSTRAINT fk_user_id 
-    FOREIGN KEY (user_id) REFERENCES "User"(id)
-    ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT fk_user_id 
+FOREIGN KEY (user_id) REFERENCES "User"(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE microclimateplan
-    ADD CONSTRAINT fk_topic_id 
-    FOREIGN KEY (topic_id) REFERENCES topicsinfo(id)
-    ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT fk_topic_id 
+FOREIGN KEY (topic_id) REFERENCES topicsinfo(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
